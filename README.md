@@ -3,7 +3,7 @@
 ## Project Explains
 This project intends to build a node server which provide RESTful API for sending email and the main purpose for this challenge is to program a switchover mechanism that swap to secondary Email provider ([Mailgun](https://www.mailgun.com/)) if main service ([Nylas](https://www.nylas.com/)) failed.
 
-### Test in public server
+### Testing public server
 URL: http://3.25.165.67:3000/email/send
 
 Send an email using curl:
@@ -53,6 +53,12 @@ Respond:
 
 > * when email is sent via Nylas, you may receive email from michaeltangfong@gamil even the "from" parameter were provided, this is because Nylas replace it with the (only allowed) registered email address in sandbox environment.
 > * you may not be able to send cc or bcc if using Mailgun service, both of them are not allowed in sandbox environment.
+
+
+Alternatively, you may use postman:
+
+![alt text](./public/images/request_sample.png)
+
 
 ## Project Requirements
 * Node.js (v18)
