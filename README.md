@@ -157,9 +157,11 @@ curl --location --request POST '127.0.0.1:3000/email/send' \
 
 ## Todo & enhancements list
 1. Complete Mail class property validation
-2. Complete test case scenarios (include idempotent)
-3. Deploy script to generate pre-launch / production `.env` configuration
+2. Complete test case scenarios
+3. Check Email class properties before send
 4. Customise validation error message to be more generic
+5. enable multiple recipient, cc or bcc in Gunmail production account, currently those features are not supported
+
 
 ## Enhancements
 1. Implement authentication
@@ -167,3 +169,4 @@ curl --location --request POST '127.0.0.1:3000/email/send' \
 3. Implement graphQL instead
 4. Keep API Request record in Database
 5. Implement an email enquiry API
+6. Deploy script to generate pre-launch / production `.env` configuration

@@ -19,17 +19,13 @@ let validations = [
     //
 ]
 
-// TODO : 1. Implement authentication
-// TODO : 2. Message encryption
 /* POST email api. */
 router.post('/', validations, async (req, res, next) => {
     const errors = validationResult(req);
-    // TODO : 10. Customise validation error message to be more generic
+    // TODO : 4. Customise validation error message to be more generic
     // reply error if validation fail
     if (!errors.isEmpty())
         return res.status(400).json({errors: errors.array()});
-
-    // TODO : 3. Keep API Request record in Database
 
     // send email and reply result
     let result = await MailServices.sendEmail(req.body);
