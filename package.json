@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "start-debug": "DEBUG=siteminder-node-mail-api:* npm start"
+    "start-debug": "DEBUG=siteminder-node-mail-api:* npm start",
+    "test": "jest"
   },
   "dependencies": {
     "axios": "^0.27.2",
@@ -17,5 +18,8 @@
     "http-errors": "~1.6.3",
     "jade": "^0.29.0",
     "morgan": "~1.9.1"
+  },
+  "devDependencies": {
+    "jest": "^28.1.1"
   }
 }
