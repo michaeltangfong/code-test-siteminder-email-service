@@ -3,6 +3,27 @@
 ## Project Explains
 This project intends to build a node server which provide RESTful API for sending email and the main purpose for this challenge is to program a switchover mechanism that swap to secondary Email provider ([Mailgun](https://www.mailgun.com/)) if main service ([Nylas](https://www.nylas.com/)) failed.
 
+Project is created using Express framework, however challenge works are mainly written in three areas as explained below:
+* /lib/models
+* /lib/services
+* /routes/email/send.js
+
+
+```bash
+.
+├── lib                           
+    ├── models                    
+        ├── MailBase.js           # Mail base class
+        ├── Nylas.js              # Nylas Class inherit MailBase
+        ├── Mailgun.js            # Mailgun Class inherit MailBase
+        ├── SendGrid.js           # SendGrid Class inherit MailBase
+    ├── services                  
+        ├── MailServices.js       # provides send email function and switchover feature
+├── routes
+    ├── email
+        ├── send.js               # validate API message and handle request 
+```
+
 ### Testing public server
 URL: http://3.25.165.67:3000/email/send
 
@@ -55,19 +76,25 @@ Respond:
 > * you may not be able to send cc or bcc if using Mailgun service, both of them are not allowed in sandbox environment.
 
 
-Alternatively, you may use postman:
+Alternatively, you can use [postman](https://www.postman.com/):
 
 ![alt text](./public/images/request_sample.png)
 
 
-## Project Requirements
+___
+
+
+
+
+## Development
+
+**Project Requirements**
 * Node.js (v18)
 * NVM
 * Yarn (optional)
 
+**Initial checkout:**
 
-## Development
-Initial checkout:
 ```shell
 git clone git@github.com:michaeltangfong/siteminder-node-mail-api.git
 cd siteminder-node-mail-api
@@ -76,6 +103,7 @@ npm install
 # or 
 yarn install
 ```
+
 
 **Configuration**
 
@@ -156,17 +184,17 @@ curl --location --request POST '127.0.0.1:3000/email/send' \
 *alternatively you are free use any API client (e.g. Postman ) to send request.*
 
 ## Todo & enhancements list
-1. Complete Mail class property validation
-2. Complete test case scenarios
-3. Check Email class properties before send
-4. Customise validation error message to be more generic
-5. enable multiple recipient, cc or bcc in Gunmail production account, currently those features are not supported
+1. Complete Mail class property validation.
+2. Complete test case scenarios.
+3. Check email class properties before send.
+4. Customise validation error message to be more generic.
+5. enable multiple recipient, cc or bcc in Gunmail production account, currently those features are not supported.
 
 
 ## Enhancements
-1. Implement authentication
-2. Message encryption
-3. Implement graphQL instead
-4. Keep API Request record in Database
-5. Implement an email enquiry API
-6. Deploy script to generate pre-launch / production `.env` configuration
+1. Implement authentication.
+2. Message encryption.
+3. Implement graphQL instead.
+4. Keep API Request record in Database.
+5. Implement an email enquiry API.
+6. Deploy script to generate pre-launch / production `.env` configuration.
