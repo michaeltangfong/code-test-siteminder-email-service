@@ -1,8 +1,59 @@
-# siteminder-node-mail-api
+# Technical Challenge for (Michael) Tang Tat Fong
 
+## Project Explains
+This project intends to build a node server which provide RESTful API for sending email and the main purpose for this challenge is to program a switchover mechanism that swap to secondary Email provider ([Mailgun](https://www.mailgun.com/)) if main service ([Nylas](https://www.nylas.com/)) failed.
 
+### Test in public server
+URL: http://3.25.165.67:3000/email/send
 
-DEBUG=siteminder-node-mail-api:* npm start
+Send an email using curl:
+```shell
+curl --location --request POST 'http://3.25.165.67:3000/email/send' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "version": "1.0.0",
+    "request_uuid": "8050a83d-0536-4136-a945-771e75e295d8",
+    "request_utc": "2022-06-14T05:04:40.000Z",
+    "recipients": {
+        "to": [
+            {
+                "email": "youremail@mail.com",
+                "name": "You Name"
+            }
+        ],
+        "cc": [
+            {
+                "email": "ccemail@mail.com"
+            }
+        ]
+        "bcc": [
+            {
+                "email": "bccemail@mail.com"
+            }
+        ]
+    },
+    "subject": "A message form captain Jack Sparrow",
+    "content": {
+            "type": "text/plain",
+            "value": "Why fight when you can negotiate?"
+    },
+    "from": {
+        "email": "jack.sparrow@alpacanets.com",
+        "name": "Jack Sparrow"
+    }
+}'
+```
+Respond:
+```shell
+{
+    "status": "OK",
+    "message": "Email sent via Nylas mail service"
+}
+```
+
+> * when email is sent via Nylas, you may receive email from michaeltangfong@gamil even the "from" parameter were provided, this is because Nylas replace it with the (only allowed) registered email address in sandbox environment.
+> * you may not be able to send cc or bcc if using Mailgun service, both of them are not allowed in sandbox environment.
+
 ## Project Requirements
 * Node.js (v18)
 * NVM
@@ -98,14 +149,15 @@ curl --location --request POST '127.0.0.1:3000/email/send' \
 
 *alternatively you are free use any API client (e.g. Postman ) to send request.*
 
-## Further todo & enhancements list
+## Todo & enhancements list
+1. Complete Mail class property validation
+2. Complete test case scenarios (include idempotent)
+3. Deploy script to generate pre-launch / production `.env` configuration
+4. Customise validation error message to be more generic
+
+## Enhancements
 1. Implement authentication
 2. Message encryption
-3. Keep API Request record in Database
-4. Implement an email enquiry API
-5. Implement graphQL instead
-6. Customise error message
-7. Complete API Message Validation
-8. Complete test case scenarios (include idempotent)
-9. Deploy script to generate pre-launch / production `.env` configuration
-10. Customise validation error message to be more generic
+3. Implement graphQL instead
+4. Keep API Request record in Database
+5. Implement an email enquiry API
