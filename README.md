@@ -1,9 +1,16 @@
 # Technical Challenge for (Michael) Tang Tat Fong
 
 ## Project Explains
-This project intends to build a node server which provide RESTful API for sending email and the main purpose for this challenge is to program a switchover mechanism that swap to secondary Email provider ([Mailgun](https://www.mailgun.com/)) if main service ([Nylas](https://www.nylas.com/)) failed.
+This project intends to build a node server which provide RESTful API for sending email and the main purpose for this challenge is to program a switchover mechanism that swap to secondary Email provider ([Mailgun](https://www.mailgun.com/)) if main service ([SendGrid](https://sendgrid.com/)) failed.
 
-Project is created using Express framework, however challenge works are mainly written in three areas as explained below:
+Project is created using [__Express framework__](https://expressjs.com/) and other libraries such as:
+
+* [Express-validator](https://express-validator.github.io/docs/) - Validate input messages.
+* [axios](https://www.npmjs.com/package/axios) - Make HTTP requests to Email Providers.
+* [jest](https://jestjs.io/) - JavaScript Testing Framework.
+* [form-data](https://www.npmjs.com/package/form-data) - make "multipart/form-data" streams for Mailgun request data. 
+
+However challenge works are mainly written in three areas as explained below:
 * /lib/models
 * /lib/services
 * /routes/email/send.js
@@ -24,10 +31,12 @@ Project is created using Express framework, however challenge works are mainly w
         ├── send.js               # validate API message and handle request 
 ```
 
-### Testing public server
+___
+ 
+## Testing public server
 URL: http://3.25.165.67:3000/email/send
 
-Send an email using curl:
+**Make API request using curl:**
 ```shell
 curl --location --request POST 'http://3.25.165.67:3000/email/send' \
 --header 'Content-Type: application/json' \
@@ -64,23 +73,88 @@ curl --location --request POST 'http://3.25.165.67:3000/email/send' \
     }
 }'
 ```
-Respond:
+Response:
 ```shell
 {
     "status": "OK",
-    "message": "Email sent via Nylas mail service"
+    "message": "Email sent via SendGrid mail service"
 }
 ```
 
-> * when email is sent via Nylas, you may receive email from michaeltangfong@gamil even the "from" parameter were provided, this is because Nylas replace it with the (only allowed) registered email address in sandbox environment.
-> * you may not be able to send cc or bcc if using Mailgun service, both of them are not allowed in sandbox environment.
+Email Provider Sandbox Environment constrains:
+> * When email is sent via __SendGrid__, sender's email address needed to be a verified domain, which is __alpacanets.com__ in my trial account.
+> * You may not be able to send cc or bcc if using __Mailgun__ service, they are not allowed in sandbox environment.
+> * When email is sent via __Nylas__, you may receive email from michaeltangfong@gamil even the "from" parameter were provided, this is because __Nylas__ replace it with the (only allowed) registered email address in sandbox environment.
 
 
-Alternatively, you can use [postman](https://www.postman.com/):
 
-![alt text](./public/images/request_sample.png)
+**Triggering failover case**
 
+Simply replace sender's email address domain other than alpacanets.com, this will fail the primary email service (SendGrid) and backup service (Mailgun) will be used instead, as below:
 
+```shell
+var axios = require('axios');
+var data = JSON.stringify({
+  "version": "1.0.0",
+  "request_uuid": "8050a83d-0536-4136-a945-771e75e295d8",
+  "request_utc": "2022-06-14T05:04:40.000Z",
+  "recipients": {
+    "to": [
+      {
+        "email": "michaeltangfong@gmail.com",
+        "name": "Michael Fong"
+      },
+      {
+        "name": "Michael Fong",
+        "email": "michaeltangfong@outlook.com"
+      }
+    ],
+    "bcc": [
+      {
+        "email": "michaeltangfong@icloud.com"
+      }
+    ]
+  },
+  "subject": "A message form captain Jack Sparrow",
+  "content": {
+    "type": "text/plain",
+    "value": "Why fight when you can negotiate?"
+  },
+  "from": {
+    "email": "jack.sparrow@failtest.com",
+    "name": "Jack Sparrow"
+  }
+});
+
+var config = {
+  method: 'post',
+  url: '127.0.0.1:3000/email/send',
+  headers: { 
+    'Content-Type': 'application/json'
+  },
+  data : data
+};
+
+axios(config)
+.then(function (response) {
+  console.log(JSON.stringify(response.data));
+})
+.catch(function (error) {
+  console.log(error);
+});
+
+```
+Response:
+```shell
+{
+    "status": "OK",
+    "message": "Email successfully sent via backup email provider Mailgun"
+}
+```
+
+**Alternatively, you can use [postman](https://www.postman.com/) to make API request:**
+
+![alt text](./public/images/sendgrid_postman_sample.png)
 ___
 
 
@@ -187,7 +261,7 @@ curl --location --request POST '127.0.0.1:3000/email/send' \
 1. Complete Mail class property validation.
 2. Complete test case scenarios.
 3. Check email class properties before send.
-4. Customise validation error message to be more generic.
+4. Customise validation error message to be more generic (e.g. error code) , so feedback can be done both backend and frontend. 
 5. enable multiple recipient, cc or bcc in Gunmail production account, currently those features are not supported.
 
 
