@@ -37,6 +37,8 @@ ___
 URL: http://3.25.165.67:3000/email/send
 
 **Make API request using curl:**
+
+(please replace to, cc, bcc to your email addresses)
 ```shell
 curl --location --request POST 'http://3.25.165.67:3000/email/send' \
 --header 'Content-Type: application/json' \
@@ -88,6 +90,8 @@ Email Provider Sandbox Environment constrains:
 
 
 **Triggering failover case**
+
+(please replace to, cc, bcc to your email addresses and keep from address as it is)
 
 Simply replace sender's email address domain other than alpacanets.com, this will fail the primary email service (SendGrid) and backup service (Mailgun) will be used instead, as below:
 
