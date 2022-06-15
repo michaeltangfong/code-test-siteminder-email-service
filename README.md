@@ -47,18 +47,17 @@ curl --location --request POST 'http://3.25.165.67:3000/email/send' \
     "recipients": {
         "to": [
             {
-                "email": "youremail@mail.com",
-                "name": "You Name"
+                "email": "michaeltangfong@gmail.com",
+                "name": "Michael Fong"
+            },
+            {
+                "name": "Michael Fong",
+                "email": "michaeltangfong@outlook.com"
             }
         ],
-        "cc": [
-            {
-                "email": "ccemail@mail.com"
-            }
-        ]
         "bcc": [
             {
-                "email": "bccemail@mail.com"
+                "email": "michaeltangfong@icloud.com"
             }
         ]
     },
@@ -93,55 +92,39 @@ Email Provider Sandbox Environment constrains:
 Simply replace sender's email address domain other than alpacanets.com, this will fail the primary email service (SendGrid) and backup service (Mailgun) will be used instead, as below:
 
 ```shell
-var axios = require('axios');
-var data = JSON.stringify({
-  "version": "1.0.0",
-  "request_uuid": "8050a83d-0536-4136-a945-771e75e295d8",
-  "request_utc": "2022-06-14T05:04:40.000Z",
-  "recipients": {
-    "to": [
-      {
-        "email": "michaeltangfong@gmail.com",
-        "name": "Michael Fong"
-      },
-      {
-        "name": "Michael Fong",
-        "email": "michaeltangfong@outlook.com"
-      }
-    ],
-    "bcc": [
-      {
-        "email": "michaeltangfong@icloud.com"
-      }
-    ]
-  },
-  "subject": "A message form captain Jack Sparrow",
-  "content": {
-    "type": "text/plain",
-    "value": "Why fight when you can negotiate?"
-  },
-  "from": {
-    "email": "jack.sparrow@failtest.com",
-    "name": "Jack Sparrow"
-  }
-});
-
-var config = {
-  method: 'post',
-  url: '127.0.0.1:3000/email/send',
-  headers: { 
-    'Content-Type': 'application/json'
-  },
-  data : data
-};
-
-axios(config)
-.then(function (response) {
-  console.log(JSON.stringify(response.data));
-})
-.catch(function (error) {
-  console.log(error);
-});
+curl --location --request POST 'http://3.25.165.67:3000/email/send' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "version": "1.0.0",
+    "request_uuid": "8050a83d-0536-4136-a945-771e75e295d8",
+    "request_utc": "2022-06-14T05:04:40.000Z",
+    "recipients": {
+        "to": [
+            {
+                "email": "michaeltangfong@gmail.com",
+                "name": "Michael Fong"
+            },
+            {
+                "name": "Michael Fong",
+                "email": "michaeltangfong@outlook.com"
+            }
+        ],
+        "bcc": [
+            {
+                "email": "michaeltangfong@icloud.com"
+            }
+        ]
+    },
+    "subject": "A message form captain Jack Sparrow",
+    "content": {
+            "type": "text/plain",
+            "value": "Why fight when you can negotiate?"
+    },
+    "from": {
+        "email": "jack.sparrow@faildomain.com",
+        "name": "Jack Sparrow"
+    }
+}'
 
 ```
 Response:
