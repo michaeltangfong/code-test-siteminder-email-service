@@ -249,7 +249,8 @@ curl --location --request POST '127.0.0.1:3000/email/send' \
 2. Complete test case scenarios.
 3. Check email class properties before send.
 4. Customise validation error message to be more generic (e.g. error code) , so feedback can be done both backend and frontend. 
-5. enable multiple recipient, cc or bcc in Gunmail production account, currently those features are not supported.
+5. Refine validation cases (check for json, subject and body length)
+6. enable multiple recipient, cc or bcc in Gunmail production account, currently those features are not supported.
 
 
 ## Enhancements

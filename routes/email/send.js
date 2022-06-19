@@ -3,6 +3,7 @@ const router = express.Router();
 const { body, validationResult } = require('express-validator');
 const MailServices = require('../../lib/services/MailServices');
 
+// TODO : 5. Refine validation cases (check for json, subject and body length)
 // validate incoming message
 let validations = [
     body('version','missing API version').exists(),
@@ -22,7 +23,7 @@ let validations = [
 /* POST email api. */
 router.post('/', validations, async (req, res, next) => {
     const errors = validationResult(req);
-    // TODO : 4. Customise validation error message to be more generic
+    // TODO : 4. Complete validation cases (isJson, subject and body length) and customise validation error message to be more generic
     // reply error if validation fail
     if (!errors.isEmpty())
         return res.status(400).json({errors: errors.array()});
